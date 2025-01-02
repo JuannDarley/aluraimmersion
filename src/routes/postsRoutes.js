@@ -10,14 +10,14 @@ const corsOptions = {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, 'uploads/');
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-      cb(null, file.originalname);
+    cb(null, file.originalname);
   }
 })
 
-const upload = multer({ dest: "./uploads" , storage})
+const upload = multer({ dest: "./uploads", storage })
 
 const routes = (app) => {
 
@@ -26,15 +26,15 @@ const routes = (app) => {
   app.use(cors(corsOptions))
 
   //Route to search posts
-    app.get('/posts', listPost)
+  app.get('/posts', listPost)
 
   //Route to create posts
-    app.post('/posts', nwPost)
+  app.post('/posts', nwPost)
 
   // Route to create image
-    app.post('/upload', upload.single('image'), uploadImage)
+  app.post('/upload', upload.single('image'), uploadImage)
 
   // Route to update posts
-    app.put('/upload/:id', updateNewPost)
+  app.put('/upload/:id', updateNewPost)
 }
 export default routes

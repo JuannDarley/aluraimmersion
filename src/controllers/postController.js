@@ -1,32 +1,33 @@
-import { getAllPosts, createPost, updatePost} from "../models/postsModels.js"
+import { getAllPosts, createPost, updatePost } from "../models/postsModels.js"
 import fs from 'fs'
 import gerarDescricaoComGemini from '../services/geminiService.js'
-export async function listPost (req, res) {
+
+export async function listPost(req, res) {
 
   const posts = await getAllPosts()
-    res.status(200).json(posts)
+  res.status(200).json(posts)
 
- }
+}
 
- export async function nwPost(req, res) {
-  
+export async function nwPost(req, res) {
+
   const newPost = req.body
 
   try {
 
-    const postCreated = await createPost (newPost)
+    const postCreated = await createPost(newPost)
     res.status(200).json(postCreated)
-  
-  } catch(error){
+
+  } catch (error) {
 
     console.error(error.message)
-    res.status(500).json({'Erro':'Falha na requisição'})
-  
-  }
- }
+    res.status(500).json({ 'Erro': 'Falha na requisição' })
 
- export async function uploadImage(req, res) {
-  
+  }
+}
+
+export async function uploadImage(req, res) {
+
   const newPost = {
 
     description: '',
@@ -36,30 +37,32 @@ export async function listPost (req, res) {
 
   try {
 
-    const postCreated = await createPost (newPost)
+    const postCreated = await createPost(newPost)
 
     const updatedImage = `uploads/${postCreated.insertedId}.png`
+
+    console.log(updatedImage)
 
     fs.renameSync(req.file.path, updatedImage)
 
     res.status(200).json(postCreated)
-  
-  } catch(error){
+
+  } catch (error) {
 
     console.error(error.message)
-    res.status(500).json({'Erro':'Falha na requisição'})
-  
-  }
- }
+    res.status(500).json({ 'Erro': 'Falha na requisição' })
 
- export async function updateNewPost(req, res) {
+  }
+}
+
+export async function updateNewPost(req, res) {
 
   const id = req.params.id;
   const urlImage = `http://localhost:3000/${id}.png`
-  
+
 
   try {
-    
+
     const imgBuffer = fs.readFileSync(`uploads/${id}.png`)
     const description = await gerarDescricaoComGemini(imgBuffer)
 
@@ -71,13 +74,13 @@ export async function listPost (req, res) {
     }
     const postCreated = await updatePost(id, post)
 
-    
+
     res.status(200).json(postCreated)
-  
-  } catch(error){
+
+  } catch (error) {
 
     console.error(error.message)
-    res.status(500).json({'Erro':'Falha na requisição'})
-  
+    res.status(500).json({ 'Erro': 'Falha na requisição' })
+
   }
 }

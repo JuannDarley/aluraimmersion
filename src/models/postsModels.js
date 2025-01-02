@@ -6,8 +6,8 @@ import connectToBank from "../config/dbConfig.js"
 const conection = await connectToBank(process.env.STRING_CONECTION)
 
 // Function connection with table
-export async function getAllPosts(){
-  
+export async function getAllPosts() {
+
   const db = conection.db('imersao-instabytes')
   const collection = db.collection('posts')
   return collection.find().toArray()
@@ -27,6 +27,6 @@ export async function updatePost(id, newPost) {
   const db = conection.db('imersao-instabytes')
   const collection = db.collection('posts')
   const objID = ObjectId.createFromHexString(id)
-  return collection.updateOne({_id: new ObjectId(objID)},{$set: newPost} )
+  return collection.updateOne({ _id: new ObjectId(objID) }, { $set: newPost })
 
 }
