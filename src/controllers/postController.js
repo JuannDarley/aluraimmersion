@@ -41,8 +41,6 @@ export async function uploadImage(req, res) {
 
     const updatedImage = `uploads/${postCreated.insertedId}.png`
 
-    console.log(updatedImage)
-
     fs.renameSync(req.file.path, updatedImage)
 
     res.status(200).json(postCreated)
